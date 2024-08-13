@@ -80,12 +80,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'adopt'
-
       - name: Build with Maven
         run: ./mvnw -B package
 
@@ -96,12 +90,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'adopt'
-
       - name: Run tests
         run: ./mvnw test
 
@@ -115,9 +103,10 @@ jobs:
       - name: Verify JAR file
         run: |
           echo "Verifying JAR file presence..."
-          ls -al /home/sheri/GITHUB/spring-petclinic/target/
-          if [ -z "$(find /home/sheri/GITHUB/spring-petclinic/target/ -name 'spring-petclinic-3.3.0-SNAPSHOT.jar')" ]; then
-            echo "JAR file not found in target directory!"
+          if [ -f "/home/sheri/spring-petclinic/target/spring-petclinic-3.3.0-SNAPSHOT.jar" ]; then
+            echo "JAR file found."
+          else
+            echo "JAR file not found!"
             exit 1
           fi
 
@@ -138,7 +127,7 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
           echo "Deploying application to $DEPLOY_SERVER"
-          scp -i ~/.ssh/id_rsa /home/sheri/GITHUB/spring-petclinic/target/spring-petclinic-3.3.0-SNAPSHOT.jar $DEPLOY_USER@$DEPLOY_SERVER:/home/sheri/spring-petclinic/
+          scp -i ~/.ssh/id_rsa /home/sheri/spring-petclinic/target/spring-petclinic-3.3.0-SNAPSHOT.jar $DEPLOY_USER@$DEPLOY_SERVER:/home/sheri/spring-petclinic/
           ssh -i ~/.ssh/id_rsa $DEPLOY_USER@$DEPLOY_SERVER "nohup java -jar /home/sheri/spring-petclinic/spring-petclinic-3.3.0-SNAPSHOT.jar > /dev/null 2>&1 &"
           rm -f ~/.ssh/id_rsa
 
