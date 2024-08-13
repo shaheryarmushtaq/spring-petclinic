@@ -82,5 +82,5 @@ jobs:
         run: |
           echo "$SSH_PRIVATE_KEY" > id_rsa
           chmod 600 id_rsa
-          scp -i id_rsa -o StrictHostKeyChecking=no target/*.jar user@103.151.111.182:/path/to/deploy
-          ssh -i id_rsa -o StrictHostKeyChecking=no user@103.151.111.182 'bash -s' < deploy-script.sh
+          scp -i id_rsa -o StrictHostKeyChecking=no target/*.jar user@103.172.26.36:/path/to/deploy
+          ssh -i id_rsa -o StrictHostKeyChecking=no user@103.172.26.36 'bash -s' < deploy-script.sh
