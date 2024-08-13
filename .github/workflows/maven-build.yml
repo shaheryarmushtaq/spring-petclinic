@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     strategy:
       matrix:
         java: [ '17' ]
@@ -34,7 +34,7 @@ jobs:
           path: target/*.jar
 
   test:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: build  # Ensures tests run after the build stage
     strategy:
       matrix:
@@ -58,7 +58,7 @@ jobs:
         run: ./mvnw test
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: build  # Ensures deployment only occurs after the build stage
     steps:
       - name: Checkout code
@@ -82,5 +82,5 @@ jobs:
         run: |
           echo "$SSH_PRIVATE_KEY" > id_rsa
           chmod 600 id_rsa
-          scp -i id_rsa -o StrictHostKeyChecking=no target/*.jar user@103.172.26.36:/path/to/deploy
-          ssh -i id_rsa -o StrictHostKeyChecking=no user@103.172.26.36 'bash -s' < deploy-script.sh
+          scp -i id_rsa -o StrictHostKeyChecking=no target/*.jar sheri@103.172.26.36://home/sheri/spring-petclinic/target
+          ssh -i id_rsa -o StrictHostKeyChecking=no sheri@103.172.26.36 'bash -s' < deploy-script.sh
