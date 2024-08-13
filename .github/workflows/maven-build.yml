@@ -82,5 +82,5 @@ jobs:
         run: |
           echo "$SSH_PRIVATE_KEY" > id_rsa
           chmod 600 id_rsa
-          scp -i id_rsa -o StrictHostKeyChecking=no target/*.jar sheri@103.172.26.36://home/sheri/spring-petclinic/target
+          scp -i id_rsa -o StrictHostKeyChecking=no target/*.jar sheri@103.172.26.36:/home/sheri/spring-petclinic/target
           ssh -i id_rsa -o StrictHostKeyChecking=no sheri@103.172.26.36 'bash -s' < deploy-script.sh
