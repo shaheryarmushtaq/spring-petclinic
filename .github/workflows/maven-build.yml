@@ -23,6 +23,13 @@ jobs:
               echo "Git is already installed."
           fi
 
+      - name: Install Java 17
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openjdk-17-jdk
+          sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+          java -version
+
       - name: Check for Docker
         run: |
           if ! command -v docker &> /dev/null
@@ -72,6 +79,7 @@ jobs:
           command -v docker
           command -v docker-compose
           command -v mvn
+          java -version
 
   build:
     runs-on: self-hosted
