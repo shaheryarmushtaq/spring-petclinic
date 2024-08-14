@@ -12,6 +12,11 @@ jobs:
   setup:
     runs-on: self-hosted
     steps:
+      - name: Add MySQL APT Repository Key
+        run: |
+          echo "Adding MySQL APT repository key..."
+          curl -fsSL https://repo.mysql.com/RPM-GPG-KEY-mysql-2022 | gpg --dearmor -o /etc/apt/trusted.gpg.d/mysql.gpg
+
       - name: Check for Git
         run: |
           if ! command -v git &> /dev/null
